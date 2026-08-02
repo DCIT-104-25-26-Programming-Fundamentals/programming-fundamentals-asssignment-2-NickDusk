@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cmath>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+bool isPrime(int n) {
+    if (n < 2) return false;
+    if (n == 2 || n == 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
+    
+    for (int i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    cout << "\n==================================================" << endl;
+    cout << "  Prime number Checker made in Ghana" << endl;
+    cout << "==================================================" << endl;
+    
+    string input;
+    
+    while (true) {
+        cout << "\nEnter a number (or 'quit' to exit): ";
+        cin >> input;
+        
+        // Convert to lowercase for comparison
+        for (char& c : input) c = tolower(c);
+        
+        if (input == "quit" || input == "exit" || input == "q") {
+            cout << "End, Thank you for using AJJNEX" << endl;
+            break;
+        }
+        
+        try {
+            int n = stoi(input);
+            bool result = isPrime(n);
+            cout << n << " is " << (result ? "PRIME" : "NOT PRIME") << endl;
+        } catch (invalid_argument& e) {
+            cout << "Please enter a valid integer or 'quit' or maybe you dont know integers go and try math 121 again" << endl;
+        }
+    }
+    
+    return 0;
+}
