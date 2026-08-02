@@ -1,0 +1,140 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <limits>
+
+using namespace std;
+
+// Function prototypes
+void displayMenu();
+double getNumber(string prompt);
+void addition();
+void subtraction();
+void multiplication();
+void division();
+void modulus();
+void exponentiation();
+
+int main() {
+    cout << "========================================" << endl;
+    cout << "  WELCOME TO THE CALCULATOR" << endl;
+    cout << "========================================" << endl;
+    
+    int choice;
+    
+    do {
+        displayMenu();
+        cout << "Select an operation (1-7): ";
+        cin >> choice;
+        
+        // Clear input buffer
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        
+        switch(choice) {
+            case 1: addition(); break;
+            case 2: subtraction(); break;
+            case 3: multiplication(); break;
+            case 4: division(); break;
+            case 5: modulus(); break;
+            case 6: exponentiation(); break;
+            case 7: 
+                cout << "\nThank you for using the calculator. Goodbye!" << endl;
+                break;
+            default:
+                cout << "Error: Invalid choice. Please select 1-7." << endl;
+        }
+    } while (choice != 7);
+    
+    return 0;
+}
+
+void displayMenu() {
+    cout << "\n========================================" << endl;
+    cout << "        SIMPLE CALCULATOR" << endl;
+    cout << "========================================" << endl;
+    cout << "1. Addition" << endl;
+    cout << "2. Subtraction" << endl;
+    cout << "3. Multiplication" << endl;
+    cout << "4. Division" << endl;
+    cout << "5. Modulus" << endl;
+    cout << "6. Exponentiation" << endl;
+    cout << "7. Quit" << endl;
+    cout << "========================================" << endl;
+}
+
+double getNumber(string prompt) {
+    double num;
+    cout << prompt;
+    cin >> num;
+    
+    // Handle invalid input
+    while (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Error: Please enter a valid number." << endl;
+        cout << prompt;
+        cin >> num;
+    }
+    
+    return num;
+}
+
+void addition() {
+    double num1 = getNumber("Enter first number: ");
+    double num2 = getNumber("Enter second number: ");
+    double result = num1 + num2;
+    cout << fixed << setprecision(2);
+    cout << "\n" << num1 << " + " << num2 << " = " << result << endl;
+}
+
+void subtraction() {
+    double num1 = getNumber("Enter first number: ");
+    double num2 = getNumber("Enter second number: ");
+    double result = num1 - num2;
+    cout << fixed << setprecision(2);
+    cout << "\n" << num1 << " - " << num2 << " = " << result << endl;
+}
+
+void multiplication() {
+    double num1 = getNumber("Enter first number: ");
+    double num2 = getNumber("Enter second number: ");
+    double result = num1 * num2;
+    cout << fixed << setprecision(2);
+    cout << "\n" << num1 << " × " << num2 << " = " << result << endl;
+}
+
+void division() {
+    double num1 = getNumber("Enter first number: ");
+    double num2 = getNumber("Enter second number: ");
+    
+    if (num2 == 0) {
+        cout << "\nError: Cannot divide by zero!" << endl;
+    } else {
+        double result = num1 / num2;
+        cout << fixed << setprecision(2);
+        cout << "\n" << num1 << " ÷ " << num2 << " = " << result << endl;
+    }
+}
+
+void modulus() {
+    double num1 = getNumber("Enter first number: ");
+    double num2 = getNumber("Enter second number: ");
+    
+    if (num2 == 0) {
+        cout << "\nError: Cannot calculate modulus by zero!" << endl;
+    } else {
+        // Only works for integers, so cast to int
+        int a = static_cast<int>(num1);
+        int b = static_cast<int>(num2);
+        int result = a % b;
+        cout << "\n" << a << " % " << b << " = " << result << endl;
+    }
+}
+
+void exponentiation() {
+    double base = getNumber("Enter base: ");
+    double exponent = getNumber("Enter exponent: ");
+    double result = pow(base, exponent);
+    cout << fixed << setprecision(2);
+    cout << "\n" << base << " ^ " << exponent << " = " << result << endl;
+}
