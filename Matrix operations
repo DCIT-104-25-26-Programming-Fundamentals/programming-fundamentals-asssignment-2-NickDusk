@@ -1,0 +1,248 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+#include <string>
+#include <sstream>
+#include <limits>
+
+using namespace std;
+
+// Function prototypes
+vector<vector<double>> readMatrix(int rows, int cols, string name = "Matrix");
+void printMatrix(const vector<vector<double>>& matrix, string title = "Matrix");
+pair<int, int> getMatrixSize(string promptRows, string promptCols);
+vector<vector<double>> transposeMatrix(const vector<vector<double>>& matrix);
+vector<vector<double>> addMatrices(const vector<vector<double>>& matrix1, const vector<vector<double>>& matrix2);
+vector<vector<double>> multiplyMatrices(const vector<vector<double>>& matrix_a, const vector<vector<double>>& matrix_b);
+void partA();
+void partB();
+void partC();
+
+int main() {
+    cout << "============================================================" << endl;
+    cout << "MATRIX OPERATIONS PROGRAM" << endl;
+    cout << "============================================================" << endl;
+    cout << "\nThis program performs three matrix operations:" << endl;
+    cout << "  A. Transpose a matrix" << endl;
+    cout << "  B. Add two matrices" << endl;
+    cout << "  C. Multiply two matrices" << endl;
+    
+    int choice;
+    while (true) {
+        cout << "\n------------------------------------------------------------" << endl;
+        cout << "Select an option:" << endl;
+        cout << "  1. Part A - Transpose" << endl;
+        cout << "  2. Part B - Addition" << endl;
+        cout << "  3. Part C - Multiplication" << endl;
+        cout << "  4. Run all parts" << endl;
+        cout << "  5. Exit" << endl;
+        
+        cout << "\nEnter your choice (1-5): ";
+        cin >> choice;
+        
+        // Clear input buffer
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        
+        switch(choice) {
+            case 1: partA(); break;
+            case 2: partB(); break;
+            case 3: partC(); break;
+            case 4: 
+                partA();
+                partB();
+                partC();
+                break;
+            case 5:
+                cout << "\nThank you for using the Matrix Operations Program!" << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please enter 1-5." << endl;
+        }
+    }
+    
+    return 0;
+}
+
+vector<vector<double>> readMatrix(int rows, int cols, string name) {
+    vector<vector<double>> matrix;
+    string line;
+    
+    cout << "\nEnter " << name << " (" << rows << " x " << cols << "):" << endl;
+    
+    for (int i = 0; i < rows; i++) {
+        while (true) {
+            cout << "Row " << (i + 1) << ": ";
+            getline(cin, line);
+            
+            stringstream ss(line);
+            vector<double> row;
+            double num;
+            int count = 0;
+            
+            while (ss >> num) {
+                row.push_back(num);
+                count++;
+            }
+            
+            if (count == cols) {
+                matrix.push_back(row);
+                break;
+            } else {
+                cout << "Please enter exactly " << cols << " numbers." << endl;
+            }
+        }
+    }
+    
+    return matrix;
+}
+
+void printMatrix(const vector<vector<double>>& matrix, string title) {
+    if (matrix.empty()) {
+        cout << "Empty matrix" << endl;
+        return;
+    }
+    
+    cout << "\n" << title << ":" << endl;
+    cout << fixed << setprecision(2);
+    for (const auto& row : matrix) {
+        for (double num : row) {
+            cout << setw(8) << num;
+        }
+        cout << endl;
+    }
+}
+
+pair<int, int> getMatrixSize(string promptRows, string promptCols) {
+    int rows, cols;
+    cout << promptRows;
+    cin >> rows;
+    cout << promptCols;
+    cin >> cols;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return {rows, cols};
+}
+
+// PART A: Transpose Matrix
+vector<vector<double>> transposeMatrix(const vector<vector<double>>& matrix) {
+    if (matrix.empty()) {
+        return {};
+    }
+    
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+    
+    vector<vector<double>> transposed(cols, vector<double>(rows));
+    
+    for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < rows; i++) {
+            transposed[j][i] = matrix[i][j];
+        }
+    }
+    
+    return transposed;
+}
+
+void partA() {
+    cout << "\n============================================================" << endl;
+    cout << "PART A: Transpose a Matrix" << endl;
+    cout << "============================================================" << endl;
+    
+    auto [rows, cols] = getMatrixSize("Enter number of rows: ", "Enter number of columns: ");
+    vector<vector<double>> matrix = readMatrix(rows, cols, "Original Matrix");
+    
+    printMatrix(matrix, "Original Matrix");
+    
+    vector<vector<double>> transposed = transposeMatrix(matrix);
+    printMatrix(transposed, "Transposed Matrix");
+}
+
+// PART B: Add Two Matrices
+vector<vector<double>> addMatrices(const vector<vector<double>>& matrix1, const vector<vector<double>>& matrix2) {
+    if (matrix1.empty() || matrix2.empty()) {
+        return {};
+    }
+    
+    int rows = matrix1.size();
+    int cols = matrix1[0].size();
+    
+    vector<vector<double>> result(rows, vector<double>(cols));
+    
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            result[i][j] = matrix1[i][j] + matrix2[i][j];
+        }
+    }
+    
+    return result;
+}
+
+void partB() {
+    cout << "\n============================================================" << endl;
+    cout << "PART B: Add Two Matrices" << endl;
+    cout << "============================================================" << endl;
+    
+    auto [rows, cols] = getMatrixSize("Enter number of rows: ", "Enter number of columns: ");
+    
+    vector<vector<double>> matrix1 = readMatrix(rows, cols, "Matrix A");
+    vector<vector<double>> matrix2 = readMatrix(rows, cols, "Matrix B");
+    
+    printMatrix(matrix1, "Matrix A");
+    printMatrix(matrix2, "Matrix B");
+    
+    vector<vector<double>> result = addMatrices(matrix1, matrix2);
+    printMatrix(result, "Matrix A + Matrix B");
+}
+
+// PART C: Multiply Two Matrices
+vector<vector<double>> multiplyMatrices(const vector<vector<double>>& matrix_a, const vector<vector<double>>& matrix_b) {
+    if (matrix_a.empty() || matrix_b.empty()) {
+        return {};
+    }
+    
+    int m = matrix_a.size();          // rows in A
+    int n = matrix_a[0].size();       // columns in A (also rows in B)
+    int p = matrix_b[0].size();       // columns in B
+    
+    vector<vector<double>> result(m, vector<double>(p, 0));
+    
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < p; j++) {
+            double total = 0;
+            for (int k = 0; k < n; k++) {
+                total += matrix_a[i][k] * matrix_b[k][j];
+            }
+            result[i][j] = total;
+        }
+    }
+    
+    return result;
+}
+
+void partC() {
+    cout << "\n============================================================" << endl;
+    cout << "PART C: Multiply Two Matrices" << endl;
+    cout << "============================================================" << endl;
+    
+    int m, n, p;
+    
+    cout << "Enter rows for Matrix A (M): ";
+    cin >> m;
+    cout << "Enter columns for Matrix A (N): ";
+    cin >> n;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    
+    vector<vector<double>> matrix_a = readMatrix(m, n, "Matrix A");
+    
+    cout << "\nMatrix B must have " << n << " rows (columns in A)." << endl;
+    cout << "Enter columns for Matrix B (P): ";
+    cin >> p;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    
+    vector<vector<double>> matrix_b = readMatrix(n, p, "Matrix B");
+    
+    printMatrix(matrix_a, "Matrix A");
+    printMatrix(matrix_b, "Matrix B");
+    
+    vector<vector<double>> result = multiplyMatrices(matrix_a, matrix_b);
+    printMatrix(result, "Matrix A × Matrix B (" + to_string(m) + " x " + to_string(p) + ")");
+}
