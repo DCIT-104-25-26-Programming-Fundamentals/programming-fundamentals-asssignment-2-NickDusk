@@ -1,0 +1,39 @@
+#include <iostream>
+#include <iomanip>
+#include <limits>
+
+using namespace std;
+
+int main() {
+    double score;
+    
+    cout << "Enter Student's Exam score: ";
+    cin >> score;
+    
+    // Check for invalid input
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Error: Please enter a valid number." << endl;
+        return 1;
+    }
+    
+    char grade;
+    if (score >= 80) {
+        grade = 'A';
+    } else if (score >= 70) {
+        grade = 'B';
+    } else if (score >= 60) {
+        grade = 'C';
+    } else if (score >= 50) {
+        grade = 'D';
+    } else {
+        grade = 'F';
+    }
+    
+    cout << fixed << setprecision(2);
+    cout << "\nScore: " << score << endl;
+    cout << "Grade: " << grade << endl;
+    
+    return 0;
+}
