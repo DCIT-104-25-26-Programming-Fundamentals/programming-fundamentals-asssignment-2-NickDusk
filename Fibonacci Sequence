@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+void partA() {
+    int n;
+    cout << "How many terms? ";
+    cin >> n;
+    
+    if (n <= 0) {
+        cout << "Error: N must be positive." << endl;
+        return;
+    }
+    
+    vector<int> fib;
+    
+    if (n >= 1) fib.push_back(0);
+    if (n >= 2) fib.push_back(1);
+    
+    for (int i = 2; i < n; i++) {
+        fib.push_back(fib[i-1] + fib[i-2]);
+    }
+    
+    cout << "Fibonacci sequence: ";
+    for (int i = 0; i < fib.size(); i++) {
+        cout << fib[i];
+        if (i < fib.size() - 1) cout << " ";
+    }
+    cout << endl;
+}
+
+void partB() {
+    int num;
+    cout << "Enter a number to check: ";
+    cin >> num;
+    
+    int a = 0, b = 1;
+    
+    while (a < num) {
+        int temp = a + b;
+        a = b;
+        b = temp;
+    }
+    
+    if (a == num) {
+        cout << num << " is a Fibonacci number." << endl;
+    } else {
+        cout << num << " is NOT a Fibonacci number." << endl;
+    }
+}
+
+int main() {
+    cout << "FIBONACCI SEQUENCE GENERATOR\n" << endl;
+    cout << "1. Print first N terms" << endl;
+    cout << "2. Check if a number is Fibonacci" << endl;
+    
+    int choice;
+    cout << "\nEnter choice (1 or 2): ";
+    cin >> choice;
+    
+    if (choice == 1) {
+        partA();
+    } else if (choice == 2) {
+        partB();
+    } else {
+        cout << "Invalid choice." << endl;
+    }
+    
+    return 0;
+}
