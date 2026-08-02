@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+#include <limits>
+#include <string>
+
+using namespace std;
+
+int main() {
+    vector<double> numbers;
+    string input;
+    
+    cout << "Enter numbers (press Enter twice to finish):" << endl;
+    
+    while (true) {
+        getline(cin, input);
+        
+        // Check for empty line (Enter twice)
+        if (input.empty()) {
+            break;
+        }
+        
+        try {
+            size_t pos = 0;
+            double num = stod(input, &pos);
+            
+            // Check if entire string was converted
+            if (pos == input.length()) {
+                numbers.push_back(num);
+            } else {
+                cout << "Please enter a valid number." << endl;
+            }
+        } catch (invalid_argument& e) {
+            cout << "Please enter a valid number." << endl;
+        }
+    }
+    
+    // Calculate statistics
+    if (!numbers.empty()) {
+        double total = 0;
+        double maximum = numbers[0];
+        double minimum = numbers[0];
+        
+        for (double num : numbers) {
+            total += num;
+            if (num > maximum) maximum = num;
+            if (num < minimum) minimum = num;
+        }
+        
+        double average = total / numbers.size();
+        
+        // Display results
+        cout << "\n==============================" << endl;
+        cout << "STATISTICAL RESULTS" << endl;
+        cout << "==============================" << endl;
+        cout << fixed << setprecision(2);
+        cout << "Sum:     " << total << endl;
+        cout << "Maximum: " << maximum << endl;
+        cout << "Minimum: " << minimum << endl;
+        cout << "Average: " << average << endl;
+        cout << "==============================" << endl;
+    } else {
+        cout << "No numbers entered." << endl;
+    }
+    
+    return 0;
+}
